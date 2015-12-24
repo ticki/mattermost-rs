@@ -1,5 +1,8 @@
 [package]
-authors = ["Ticki <Ticki@users.noreply.github.com>"]
+authors = [
+  "Ticki <Ticki@users.noreply.github.com>",
+  "Skyler Berg <skylertheberg@gmail.com>"
+]
 name = "mattermost"
 version = "0.1.0"
 
