@@ -1,3 +1,4 @@
-#[test]
-fn it_works() {
-}
+#![feature(plugin)]
+#![plugin(json_macros)]
+
+extern crate hyper;
