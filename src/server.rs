@@ -8,8 +8,8 @@ struct OutgoingServer<C: OutgoingCallback> {
     server: Server,
 }
 
-struct Server {
-    outgoing: Option<OutgoingServer>,
+struct Server<C: OutgoingCallback> {
+    outgoing: Option<OutgoingServer<C>>,
     client: Option<Client>,
 }
 
