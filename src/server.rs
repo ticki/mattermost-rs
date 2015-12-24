@@ -14,7 +14,7 @@ struct Server<C: OutgoingCallback> {
 }
 
 impl Server {
-    pub fn send(&mut self, payload: IncommingPayload) {
+    pub fn send(&mut self, payload: IncomingPayload) {
 
     }
 }

@@ -1,2 +1,2 @@
-pub struct IncommingPayload;
+pub struct IncomingPayload;
 pub struct OutgoingPayload;
