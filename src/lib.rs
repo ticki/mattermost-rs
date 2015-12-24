@@ -3,7 +3,8 @@
 #![plugin(json_macros)]
 
 mod outgoing;
-mod server;
-mod payload;
+pub mod server;
+pub mod payload;
 
 extern crate hyper;
+extern crate rustc_serialize;
