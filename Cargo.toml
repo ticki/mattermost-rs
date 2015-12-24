@@ -1,6 +1,10 @@
 [package]
+authors = ["Ticki <Ticki@users.noreply.github.com>"]
 name = "mattermost"
 version = "0.1.0"
-authors = ["Ticki <Ticki@users.noreply.github.com>"]
 
 [dependencies]
+hyper = "*"
+
+[dependencies.json_macros]
+git = "https://github.com/tomjakubowski/json_macros"
