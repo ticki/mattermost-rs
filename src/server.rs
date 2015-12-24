@@ -1,7 +1,7 @@
 use std::slice::SliceConcatExt;
 
 use outgoing::OutgoingCallback;
-use payload::IncommingPayload;
+use payload::IncomingPayload;
 
 use hyper::server::Server as HServer;
 use hyper::client::Client;
@@ -14,15 +14,15 @@ pub struct OutgoingServer<C: OutgoingCallback> {
 
 pub struct Server<C: OutgoingCallback> {
     outgoing: Option<OutgoingServer<C>>,
-    incomming: IncommingHook,
+    incomming: IncomingHook,
 }
 
-pub struct IncommingHook {
+pub struct IncomingHook {
     url: Option<&'static str>,
 }
 
-impl IncommingHook {
-    pub fn send(&mut self, payload: IncommingPayload) {
+impl IncomingHook {
+    pub fn send(&mut self, payload: IncomingPayload) {
         let url = self.url.expect("Client not initialized");
 
         let client = Client::new();

@@ -1,7 +1,7 @@
-pub struct IncommingPayload;
+pub struct IncomingPayload;
 pub struct OutgoingPayload;
 
-impl IncommingPayload {
+impl IncomingPayload {
     pub fn to_json(&self) -> String {
         String::new()
     }
