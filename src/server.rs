@@ -41,6 +41,7 @@ impl IncomingHook {
         let mut message = String::new();
         res.read_to_string(&mut message);
         println!("{}", payload.to_json());
+        println!("{}", message);
 
     }
 }
