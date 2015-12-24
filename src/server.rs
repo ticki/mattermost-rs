@@ -1,20 +1,36 @@
+use std::slice::SliceConcatExt;
+
 use outgoing::OutgoingCallback;
+use payload::IncommingPayload;
 
-use hyper::server::Server;
+use hyper::server::Server as HServer;
 use hyper::client::Client;
+use hyper::header::Connection;
 
-struct OutgoingServer<C: OutgoingCallback> {
+pub struct OutgoingServer<C: OutgoingCallback> {
     callback: C,
-    server: Server,
+    server: HServer,
 }
 
-struct Server<C: OutgoingCallback> {
+pub struct Server<C: OutgoingCallback> {
     outgoing: Option<OutgoingServer<C>>,
-    client: Option<Client>,
+    incomming: IncommingHook,
 }
 
-impl Server {
+pub struct IncommingHook {
+    url: Option<&'static str>,
+}
+
+impl IncommingHook {
     pub fn send(&mut self, payload: IncommingPayload) {
+        let url = self.url.expect("Client not initialized");
+
+        let client = Client::new();
+        let res = client.get(url)
+                        .header(Connection::close())
+                        .body(
+                            format!("payload=\"{}\"", payload.to_json()).as_bytes()
+                        ).send().expect("Request failed");
 
     }
 }
