@@ -1,8 +1,11 @@
 #![feature(slice_concat_ext)]
-#![feature(plugin)]
-#![plugin(json_macros)]
+#![feature(custom_derive, plugin)]
+#![plugin(serde_macros)]
 
 mod outgoing;
-//mod incoming;
+pub mod server;
+pub mod payload;
 
 extern crate hyper;
+extern crate serde;
+extern crate serde_json;

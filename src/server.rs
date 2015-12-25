@@ -1,11 +1,13 @@
 use std::slice::SliceConcatExt;
+use std::io::Read;
 
 use outgoing::OutgoingCallback;
 use payload::IncomingPayload;
 
 use hyper::server::Server as HServer;
 use hyper::client::Client;
-use hyper::header::Connection;
+use hyper::header::{Connection, ContentType, Headers};
+use hyper::mime::{Mime, TopLevel, SubLevel};
 
 pub struct OutgoingServer<C: OutgoingCallback> {
     callback: C,
@@ -14,23 +16,30 @@ pub struct OutgoingServer<C: OutgoingCallback> {
 
 pub struct Server<C: OutgoingCallback> {
     outgoing: Option<OutgoingServer<C>>,
-    incomming: IncomingHook,
+    incoming: IncomingHook,
 }
 
 pub struct IncomingHook {
-    url: Option<&'static str>,
+    url: &'static str,
 }
 
 impl IncomingHook {
-    pub fn send(&mut self, payload: IncomingPayload) {
-        let url = self.url.expect("Client not initialized");
+    pub fn new(url: &'static str) -> IncomingHook {
+        IncomingHook {
+            url: url,
+        }
+    }
+
+    pub fn send(&self, payload: IncomingPayload) {
+        let mut headers = Headers::new();
+        headers.set(ContentType(Mime(TopLevel::Application, SubLevel::Json, vec![])));
 
         let client = Client::new();
-        let res = client.get(url)
+        let mut res = client.post(self.url)
                         .header(Connection::close())
+                        .headers(headers)
                         .body(
-                            format!("payload=\"{}\"", payload.to_json()).as_bytes()
+                            payload.to_json().as_bytes()
                         ).send().expect("Request failed");
-
     }
 }
