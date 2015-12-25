@@ -62,47 +62,37 @@ impl OutgoingPayload {
     }
 }
 
-struct Handle<F>
-       where F: Fn(OutgoingPayload) {
+pub struct OutgoingHook<F>
+    where F: Fn(OutgoingPayload) {
     callback: F,
 }
 
-unsafe impl<F: Fn(OutgoingPayload)> Send for Handle<F> {}
-unsafe impl<F: Fn(OutgoingPayload)> Sync for Handle<F> {}
+unsafe impl<F: Fn(OutgoingPayload)> Send for OutgoingHook<F> {}
+unsafe impl<F: Fn(OutgoingPayload)> Sync for OutgoingHook<F> {}
 
-impl<F> Handler for Handle<F>
+impl<F> Handler for OutgoingHook<F>
         where F: Fn(OutgoingPayload) {
-    fn handle<'a, 'k>(&'a self, req: Request<'a, 'k>, res: Response<'a, Fresh>) {
+
+    fn handle<'a, 'k>(&'a self, mut req: Request<'a, 'k>, mut res: Response<'a, Fresh>) {
         let mut s = String::new();
 
         req.read_to_string(&mut s);
 
-        self.callback(OutgoingPayload::from_str(&s));
+        (self.callback)(OutgoingPayload::from_str(&s));
     }
-}
-
-pub struct OutgoingHook<F>
-    where F: Fn(OutgoingPayload) {
-
-    callback: Option<F>,
-
 }
 
 impl<F> OutgoingHook<F>
         where F: Fn(OutgoingPayload) {
 
     pub fn on(&mut self, f: F) -> &mut Self {
-        self.callback = Some(f);
+        self.callback = f;
         self
     }
 
     pub fn init(&mut self, host: &str) {
         let server = Server::http("127.0.0.1:1337")
                             .expect("Could not start HTTP server");
-        let _ = server.handle(Handle {
-            callback: self.callback.expect("No callback set"),
-        });
-
+        //let _ = server.handle(self);
     }
-
 }
