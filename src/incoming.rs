@@ -1,6 +1,3 @@
-use std::slice::SliceConcatExt;
-use std::io::Read;
-
 use payload::IncomingPayload;
 
 use hyper::client::Client;
@@ -23,11 +20,10 @@ impl IncomingHook {
         headers.set(ContentType(Mime(TopLevel::Application, SubLevel::Json, vec![])));
 
         let client = Client::new();
-        let mut res = client.post(self.url)
-                        .header(Connection::close())
-                        .headers(headers)
-                        .body(
-                            payload.to_json().as_bytes()
-                        ).send().expect("Request failed");
+        client.post(self.url)
+            .header(Connection::close())
+            .headers(headers)
+            .body(payload.to_json().as_bytes())
+            .send().expect("Request failed");
     }
 }
