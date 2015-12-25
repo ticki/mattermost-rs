@@ -1,5 +1,3 @@
-use payload::IncomingPayload;
-
 use hyper::client::Client;
 use hyper::header::{Connection, ContentType, Headers};
 use hyper::mime::{Mime, TopLevel, SubLevel};
