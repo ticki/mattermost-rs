@@ -4,6 +4,27 @@ use hyper::client::Client;
 use hyper::header::{Connection, ContentType, Headers};
 use hyper::mime::{Mime, TopLevel, SubLevel};
 
+use serde_json;
+
+#[derive(Serialize)]
+pub struct IncomingPayload {
+    text: String,
+}
+
+
+impl IncomingPayload {
+    pub fn new(text: String) -> IncomingPayload {
+        IncomingPayload {
+            text: text,
+        }
+    }
+
+    pub fn to_json(&self) -> String {
+        let json = serde_json::to_string(&self);
+        json.expect("Fatal error in serialization")
+    }
+}
+
 pub struct IncomingHook {
     url: &'static str,
 }
