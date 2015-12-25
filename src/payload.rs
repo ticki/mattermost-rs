@@ -1,6 +1,6 @@
-use rustc_serialize::json;
+use serde_json;
 
-#[derive(RustcEncodable)]
+#[derive(Serialize)]
 pub struct IncomingPayload {
     text: String,
 }
@@ -15,7 +15,7 @@ impl IncomingPayload {
     }
 
     pub fn to_json(&self) -> String {
-        let json = json::encode(&self);
+        let json = serde_json::to_string(&self);
         match json {
             Ok(data) => data,
             Err(_) => "{}".to_string(),

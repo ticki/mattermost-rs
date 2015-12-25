@@ -8,7 +8,6 @@ version = "0.1.0"
 
 [dependencies]
 hyper = "*"
-rustc-serialize = "*"
-
-[dependencies.json_macros]
-git = "https://github.com/tomjakubowski/json_macros"
+serde = "*"
+serde_json = "*"
+serde_macros = "*"

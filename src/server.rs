@@ -6,7 +6,8 @@ use payload::IncomingPayload;
 
 use hyper::server::Server as HServer;
 use hyper::client::Client;
-use hyper::header::{Connection, ContentType};
+use hyper::header::{Connection, ContentType, Headers};
+use hyper::mime::{Mime, TopLevel, SubLevel};
 
 pub struct OutgoingServer<C: OutgoingCallback> {
     callback: C,
@@ -31,17 +32,15 @@ impl IncomingHook {
     pub fn send(&self, payload: IncomingPayload) {
         let url = self.url.expect("Client not initialized");
 
+        let mut headers = Headers::new();
+        headers.set(ContentType(Mime(TopLevel::Application, SubLevel::Json, vec![])));
+
         let client = Client::new();
         let mut res = client.post(url)
                         .header(Connection::close())
-                        .header(ContentType::json())
+                        .headers(headers)
                         .body(
-                            format!("{}", payload.to_json()).as_bytes()
+                            payload.to_json().as_bytes()
                         ).send().expect("Request failed");
-        let mut message = String::new();
-        res.read_to_string(&mut message);
-        println!("{}", payload.to_json());
-        println!("{}", message);
-
     }
 }
