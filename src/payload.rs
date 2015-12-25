@@ -18,7 +18,7 @@ impl IncomingPayload {
         let json = serde_json::to_string(&self);
         match json {
             Ok(data) => data,
-            Err(_) => "{}".to_string(),
+            Err(_) => panic!("All IncomingPayloads should be serializable, yet this one failed"),
         }
     }
 }
