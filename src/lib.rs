@@ -2,8 +2,8 @@
 #![feature(custom_derive, plugin)]
 #![plugin(serde_macros)]
 
-mod outgoing;
-pub mod server;
+pub mod outgoing;
+pub mod incoming;
 pub mod payload;
 
 extern crate hyper;

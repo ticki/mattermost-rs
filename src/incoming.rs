@@ -1,23 +1,11 @@
 use std::slice::SliceConcatExt;
 use std::io::Read;
 
-use outgoing::OutgoingCallback;
 use payload::IncomingPayload;
 
-use hyper::server::Server as HServer;
 use hyper::client::Client;
 use hyper::header::{Connection, ContentType, Headers};
 use hyper::mime::{Mime, TopLevel, SubLevel};
-
-pub struct OutgoingServer<C: OutgoingCallback> {
-    callback: C,
-    server: HServer,
-}
-
-pub struct Server<C: OutgoingCallback> {
-    outgoing: Option<OutgoingServer<C>>,
-    incoming: IncomingHook,
-}
 
 pub struct IncomingHook {
     url: &'static str,
