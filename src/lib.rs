@@ -4,7 +4,6 @@
 
 pub mod outgoing;
 pub mod incoming;
-pub mod payload;
 
 extern crate hyper;
 extern crate serde;
